@@ -1,27 +1,33 @@
 pipeline {
     agent any
-    options {
-        skipStagesAfterUnstable()
+
+    environment {
+        // Nexus credentials from Jenkins (UsernamePassword type)
+        NEXUS_CREDENTIALS = credentials('jenkins-user')  
     }
+
     stages {
-        stage('Build') {
+        stage('Build & Test') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn clean test'
             }
         }
-        stage('Test') {
+
+        stage('SonarQube Analysis') {
             steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                withSonarQubeEnv('biro-sample') {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
-        stage('Deliver') { 
+
+        stage('Deploy to Nexus') {
             steps {
-                sh './jenkins/scripts/deliver.sh' 
+                sh """
+                  mvn deploy \
+                    -Dnexus.username=$NEXUS_CREDENTIALS_USR \
+                    -Dnexus.password=$NEXUS_CREDENTIALS_PSW
+                """
             }
         }
     }
