@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven-3.9.11'  // The name you gave in Jenkins Global Tool Config
+    }
 
     environment {
         // Nexus credentials from Jenkins (UsernamePassword type)
