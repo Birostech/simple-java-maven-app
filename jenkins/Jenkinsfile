@@ -5,7 +5,7 @@ pipeline {
     }
 
     environment {
-        SONAR_TOKEN = credentials('biro-sonar-token') // SonarQube token
+        SONAR_TOKEN = credentials('biro-sonar-token') // SonarQube authentication token
     }
 
     stages {
@@ -26,8 +26,8 @@ pipeline {
                 withSonarQubeEnv('biro-sample') {
                     sh """
                        mvn sonar:sonar \
-                         -Dsonar.projectKey=biro-sample \
-                         -Dsonar.projectName=Biro-Sample \
+                         -Dsonar.projectKey=com.yourcompany.biro-sample \
+                         -Dsonar.projectName=biro-Sample \
                          -Dsonar.login=$SONAR_TOKEN
                     """
                 }
@@ -36,20 +36,18 @@ pipeline {
 
         stage('Deploy to Nexus') {
             steps {
-                // Use withCredentials block to inject Nexus username and password securely
                 withCredentials([usernamePassword(
                     credentialsId: 'biro-nexus', 
-                    usernameVariable: 'NEXUS_USER', 
-                    passwordVariable: 'NEXUS_PASS'
+                    usernameVariable: 'NEXUS_CREDENTIALS_USR', 
+                    passwordVariable: 'NEXUS_CREDENTIALS_PSW'
                 )]) {
                     sh """
-                       mvn deploy \
-                         -Dnexus.username=$NEXUS_USER \
-                         -Dnexus.password=$NEXUS_PASS
+                      mvn deploy \
+                        -Dnexus.username=$NEXUS_CREDENTIALS_USR \
+                        -Dnexus.password=$NEXUS_CREDENTIALS_PSW
                     """
                 }
             }
         }
     }
 }
-
