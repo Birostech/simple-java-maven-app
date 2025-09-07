@@ -6,7 +6,7 @@ pipeline {
 
     environment {
         // Nexus credentials from Jenkins (UsernamePassword type)
-        NEXUS_CREDENTIALS = credentials('biro-sample')  
+        NEXUS_CREDENTIALS = credentials('biro-nexus')  
     }
 
     stages {
