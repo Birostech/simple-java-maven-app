@@ -1,15 +1,20 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven-3.9.11'  // The name you gave in Jenkins Global Tool Config
+        maven 'Maven-3.9.11'  // Must exactly match the Name in Jenkins tool config
     }
 
     environment {
-        // Nexus credentials from Jenkins (UsernamePassword type)
         NEXUS_CREDENTIALS = credentials('biro-nexus')  
     }
 
     stages {
+        stage('Check Maven') {
+            steps {
+                sh 'mvn -v'
+            }
+        }
+
         stage('Build & Test') {
             steps {
                 sh 'mvn clean test'
