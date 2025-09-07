@@ -84,11 +84,11 @@
   <distributionManagement>
     <repository>
       <id>biro-releases</id>
-      <url>http://192.168.56.13:8081/repository/biro-releases/</url>
+      <url>http://192.168.56.13:8081/repository/biro-releases</url>
     </repository>
     <snapshotRepository>
       <id>bro-snapshot</id>
-      <url>http://192.168.56.13:8081/repository/bro-snapshot/</url>
+      <url>http://192.168.56.13:8081/repository/bro-snapshot</url>
     </snapshotRepository>
   </distributionManagement>
 
