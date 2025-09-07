@@ -5,7 +5,8 @@ pipeline {
     }
 
     environment {
-        NEXUS_CREDENTIALS = credentials('biro-nexus')  
+        NEXUS_CREDENTIALS = credentials('biro-nexus')
+        SONAR_TOKEN = credentials('biro-sonar-token') // SonarQube authentication token
     }
 
     stages {
@@ -24,7 +25,12 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('biro-sample') {
-                    sh 'mvn sonar:sonar'
+                    sh """
+                       mvn sonar:sonar \
+                         -Dsonar.projectKey=com.yourcompany.biro-sample \
+                         -Dsonar.projectName=biro-Sample \
+                         -Dsonar.login=$SONAR_TOKEN
+                    """
                 }
             }
         }
