@@ -14,6 +14,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
+    <!-- Nexus credentials placeholders -->
+    <nexus.username>${nexus.username}</nexus.username>
+    <nexus.password>${nexus.password}</nexus.password>
   </properties>
 
   <dependencies>
@@ -78,6 +81,21 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- INSERTED MAVEN DEPLOY PLUGIN TO USE CREDENTIALS -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <repositoryId>bro-snapshot</repositoryId>
+          <url>http://192.168.56.13:8081/repository/bro-snapshot</url>
+          <uniqueVersion>true</uniqueVersion>
+          <username>${nexus.username}</username>
+          <password>${nexus.password}</password>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
