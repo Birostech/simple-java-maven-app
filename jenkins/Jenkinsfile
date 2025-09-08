@@ -26,8 +26,8 @@ pipeline {
                 withSonarQubeEnv('biro-sample') {
                     sh """
                        mvn sonar:sonar \
-                         -Dsonar.projectKey=biro-sample \
-                         -Dsonar.projectName=Biro-Sample \
+                         -Dsonar.projectKey=com.yourcompany.biro-sample \
+                         -Dsonar.projectName=biro-Sample \
                          -Dsonar.login=$SONAR_TOKEN
                     """
                 }
