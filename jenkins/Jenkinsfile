@@ -9,15 +9,10 @@ pipeline {
     }
 
     stages {
-        stage('Check Maven') {
-            steps {
-                sh 'mvn -v'
-            }
-        }
 
         stage('Build & Test') {
             steps {
-                sh 'mvn install'
+                sh 'mvn clean install'
             }
         }
 
